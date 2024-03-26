@@ -1,9 +1,5 @@
 // bye bye
 // This is the second change 
-
-//I am working on the same project blah blah balh 
-//Coding faries are here to help you out
-
 const express = require("express");
 const app = express();
 const path = require("path");
