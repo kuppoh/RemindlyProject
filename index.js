@@ -1,7 +1,3 @@
-// bye bye
-// This is the second change 
-
-// hi hi hi hi hi hi hi hi hi hi hi
 const express = require("express");
 const app = express();
 const path = require("path");
