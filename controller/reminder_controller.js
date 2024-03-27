@@ -33,7 +33,7 @@ let remindersController = {
   },
 
   edit: (req, res) => {
-    let reminderToFind = req.params.id;
+    let reminderToFind = req.params.id; 
     let searchResult = database.cindy.reminders.find(function (reminder) {
       return reminder.id == reminderToFind;
     });
@@ -46,6 +46,23 @@ let remindersController = {
 
   delete: (req, res) => {
     // implementation here 👈
+    let reminderToFind = req.params.id // gets the id of the current reminder
+    // console.log(reminderToFind)
+
+    // req.user.reminders[reminderToFind]
+    // ex. jimmy.reminders[2]
+
+    let searchResult = database.cindy.reminders.findIndex(function (reminder) {
+      return reminder.id == reminderToFind;
+    });
+    // findIndex() = allows us to get the index of the reminder we are on
+    // console.log(searchResult);
+
+    database.cindy.reminders.splice(searchResult, 1);
+    // searchResult = index of the reminder we are currently viewing
+    // 1, how many elements to delete starting at searchResult
+
+    res.redirect("/reminders");
   },
 };
 
