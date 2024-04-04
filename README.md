@@ -14,3 +14,11 @@ Keziah Wacnang:
 - looked at how the `create` method worked 
 - Research on using `findIndex()` and `splice()` functions for the `delete` method
 - Worked on and finished the `delete` method in `reminder_controller.js` 
+
+April 4th (Started Work on 2nd Sprint (Passport Implementation))
+Chris Poon:
+I worked on the following tasks:
+1. Added Passport Functionality - I added the passport code from my passportStarterCode project to the remindly index.js
+2. Added Routes for Login Functionality -  I added the login route from my passportStarterCode project to the remindly index.js
+
+
