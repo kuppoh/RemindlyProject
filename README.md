@@ -11,6 +11,7 @@ I worked on the following tasks:
 and adding an if statement for the "True/False Reminder Completed" Radio Button.
 
 Keziah Wacnang:
+I worked on the following tasks:
 - looked at how the `create` method worked 
 - Research on using `findIndex()` and `splice()` functions for the `delete` method
 - Worked on and finished the `delete` method in `reminder_controller.js` 
