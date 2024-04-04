@@ -20,5 +20,6 @@ Chris Poon:
 I worked on the following tasks:
 1. Added Passport Functionality - I added the passport code from my passportStarterCode project to the remindly index.js
 2. Added Routes for Login Functionality -  I added the login route from my passportStarterCode project to the remindly index.js
+3. Fixed Paths - Fixed the redirect paths for the login page
 
 
