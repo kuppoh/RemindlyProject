@@ -23,4 +23,10 @@ I worked on the following tasks:
 2. Added Routes for Login Functionality -  I added the login route from my passportStarterCode project to the remindly index.js
 3. Fixed Paths - Fixed the redirect paths for the login page
 
+April 9th (Formatted web pages and cleaned up code)
+Chris Poon:
+I worked on the following tasks:
+1. Added "Welcome User" Functionality - The name of the current user that is logged in will be displayed on the top of reminders page(s)
+2. Debugged and tested - Test specific user login with create/edit and delete functionality in web
+3. Added log out button - Added log out button in reminder page(s)
 

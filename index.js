@@ -5,6 +5,9 @@ const ejsLayouts = require("express-ejs-layouts");
 const reminderController = require("./controller/reminder_controller");
 const authController = require("./controller/auth_controller");
 const router = express.Router();
+const session = require('express-session');
+const passport = require('./middleware/passport');
+const userController = require('./controller/userController');
 
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -13,8 +16,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(ejsLayouts);
 
 // Added code for passport
-const passport = require("./middleware/passport");
-const { forwardAuthenticated } = require("../middleware/checkAuth");
+app.use(session({
+  secret: 'your secret key',
+  resave: false,
+  saveUninitialized: true,
+}));
+const { forwardAuthenticated } = require("./middleware/checkAuth");
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -34,20 +41,47 @@ app.post("/reminder/delete/:id", reminderController.delete);
 app.get("/register", authController.register);
 app.get("/login", authController.login);
 app.post("/register", authController.registerSubmit);
-app.post("/login", authController.loginSubmit);
+//app.post("/login", authController.loginSubmit);
+
+passport.serializeUser(function (user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(async function (id, done) {
+  try {
+    let user = await userController.getUserById(id);
+    if (user) {
+      done(null, user);
+    } else {
+      done({ message: "User not found" }, null);
+    }
+  } catch (error) {
+    done(error);
+  }
+});
 
 // Login and logout route
-router.get("/login", forwardAuthenticated, (req, res) => res.render("login"));
+app.get("/login", forwardAuthenticated, (req, res) => res.render("login"));
 
-router.post(
+app.post(
   "/login",
   passport.authenticate("local", {
-    successRedirect: "/dashboard",
+    successRedirect: "/reminders",
     failureRedirect: "/login",
   })
 );
 
-router.get("/logout", (req, res) => {
+app.post('/logout', (req, res) => {
+  req.session.destroy(function(err) {
+    if(err) {
+      console.log(err);
+    } else {
+      res.redirect('/');
+    }
+  });
+});
+
+app.get("/logout", (req, res) => {
   req.logout();
   res.redirect("/login");
 });
