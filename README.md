@@ -30,3 +30,11 @@ I worked on the following tasks:
 2. Debugged and tested - Test specific user login with create/edit and delete functionality in web
 3. Added log out button - Added log out button in reminder page(s)
 
+April 9th (2nd sprint)
+Keziah Wacnang:
+I worked on the following tasks:
+1. fixed some code regarding using the findByID, because some code were using findById, where it should be findByID.
+2. rearranged and added people into the database along with some reminders
+   1. added the same users from the passport lab
+3. editted reminder_controller.js: used req.user instead of cindy
+4. fixed the ejs for index.ejs

@@ -17,9 +17,9 @@ app.use(ejsLayouts);
 
 // Added code for passport
 app.use(session({
-  secret: 'your secret key',
-  resave: false,
-  saveUninitialized: true,
+    secret: 'your secret key',
+    resave: false,
+    saveUninitialized: true,
 }));
 const { forwardAuthenticated } = require("./middleware/checkAuth");
 app.use(passport.initialize());
@@ -44,20 +44,7 @@ app.post("/register", authController.registerSubmit);
 //app.post("/login", authController.loginSubmit);
 
 passport.serializeUser(function (user, done) {
-  done(null, user.id);
-});
-
-passport.deserializeUser(async function (id, done) {
-  try {
-    let user = await userController.getUserById(id);
-    if (user) {
-      done(null, user);
-    } else {
-      done({ message: "User not found" }, null);
-    }
-  } catch (error) {
-    done(error);
-  }
+    done(null, user.id);
 });
 
 // Login and logout route
@@ -87,7 +74,7 @@ app.get("/logout", (req, res) => {
 });
 
 app.listen(3001, function () {
-  console.log(
-    "Server running. Visit: http://localhost:3001/reminders in your browser 🚀"
-  );
+    console.log(
+        "Server running. Visit: http://localhost:3001/reminders in your browser 🚀"
+    );
 });
