@@ -24,3 +24,10 @@ I worked on the following tasks:
 3. Fixed Paths - Fixed the redirect paths for the login page
 
 
+April 9th (2nd sprint)
+Keziah Wacnang:
+I worked on the following tasks:
+1. fixed code in index.js 
+2. rearranged and added people into the database along with some reminders
+   1. added the same users from the passport lab
+3. fixed the ejs for index.ejs

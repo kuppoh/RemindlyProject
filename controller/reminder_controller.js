@@ -1,80 +1,83 @@
 let database = require("../database");
+let userModel = require("../models/userModel")
+
 
 let remindersController = {
-  list: (req, res) => {
-    res.render("reminder/index", { reminders: database.cindy.reminders });
-  },
+    list: (req, res) => {
+        res.render("reminder/index", { reminders: req.user.reminders });
 
-  new: (req, res) => {
-    res.render("reminder/create");
-  },
+    },
 
-  listOne: (req, res) => {
-    let reminderToFind = req.params.id;
-    let searchResult = database.cindy.reminders.find(function (reminder) {
-      return reminder.id == reminderToFind;
-    });
-    if (searchResult != undefined) {
-      res.render("reminder/single-reminder", { reminderItem: searchResult });
-    } else {
-      res.render("reminder/index", { reminders: database.cindy.reminders });
-    }
-  },
+    new: (req, res) => {
+        res.render("reminder/create");
+    },
 
-  create: (req, res) => {
-    let reminder = {
-      id: database.cindy.reminders.length + 1,
-      title: req.body.title,
-      description: req.body.description,
-      completed: false,
-    };
-    database.cindy.reminders.push(reminder);
-    res.redirect("/reminders");
-  },
+    listOne: (req, res) => {
+        let reminderToFind = req.params.id;
+        let searchResult = req.user.reminders.find(function (reminder) {
+        return reminder.id == reminderToFind;
+        });
+        if (searchResult != undefined) {
+        res.render("reminder/single-reminder", { reminderItem: searchResult });
+        } else {
+        res.render("reminder/index", { reminders: req.user.reminders });
+        }
+    },
 
-  edit: (req, res) => {
-    let reminderToFind = req.params.id; 
-    let searchResult = database.cindy.reminders.find(function (reminder) {
-      return reminder.id == reminderToFind;
-    });
-    res.render("reminder/edit", { reminderItem: searchResult });
-  },
+    create: (req, res) => {
+        let reminder = {
+        id: req.user.reminders.length + 1,
+        title: req.body.title,
+        description: req.body.description,
+        completed: false,
+        };
+        req.user.reminders.push(reminder);
+        res.redirect("/reminders");
+    },
 
-  update: (req, res) => {
-    let reminderToFind = req.params.id;
-    let searchResult = database.cindy.reminders.find(function (reminder) {
-      return reminder.id == reminderToFind;
-    });
-    searchResult.title = req.body.title;
-    searchResult.description = req.body.description;
-    if (req.body.completed == "true") {
-      searchResult.completed = true;
-    } else {
-      searchResult.completed = false;
-    }
-    res.redirect("/reminders");
-  },
+    edit: (req, res) => {
+        let reminderToFind = req.params.id; 
+        let searchResult = req.user.reminders.find(function (reminder) {
+        return reminder.id == reminderToFind;
+        });
+        res.render("reminder/edit", { reminderItem: searchResult });
+    },
 
-  delete: (req, res) => {
-    // implementation here 👈
-    let reminderToFind = req.params.id // gets the id of the current reminder
-    // console.log(reminderToFind)
+    update: (req, res) => {
+        let reminderToFind = req.params.id;
+        let searchResult = req.user.reminders.find(function (reminder) {
+        return reminder.id == reminderToFind;
+        });
+        searchResult.title = req.body.title;
+        searchResult.description = req.body.description;
+        if (req.body.completed == "true") {
+        searchResult.completed = true;
+        } else {
+        searchResult.completed = false;
+        }
+        res.redirect("/reminders");
+    },
 
-    // req.user.reminders[reminderToFind]
-    // ex. jimmy.reminders[2]
+    delete: (req, res) => {
+        // implementation here 👈
+        let reminderToFind = req.params.id // gets the id of the current reminder
+        // console.log(reminderToFind)
 
-    let searchResult = database.cindy.reminders.findIndex(function (reminder) {
-      return reminder.id == reminderToFind;
-    });
-    // findIndex() = allows us to get the index of the reminder we are on
-    // console.log(searchResult);
+        // req.user.reminders[reminderToFind]
+        // ex. jimmy.reminders[2]
 
-    database.cindy.reminders.splice(searchResult, 1);
-    // searchResult = index of the reminder we are currently viewing
-    // 1, how many elements to delete starting at searchResult
+        let searchResult = req.user.reminders.findIndex(function (reminder) {
+        return reminder.id == reminderToFind;
+        });
+        // findIndex() = allows us to get the index of the reminder we are on
+        // console.log(searchResult);
 
-    res.redirect("/reminders");
-  },
+        req.user.reminders.splice(searchResult, 1);
+        // searchResult = index of the reminder we are currently viewing
+        // 1, how many elements to delete starting at searchResult
+
+        res.redirect("/reminders");
+    },
 };
 
 module.exports = remindersController;
