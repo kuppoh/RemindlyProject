@@ -1,0 +1,21 @@
+<div class="container">
+
+    <h1 class="page-header">Active Sessions</h1>
+
+    <ul class="list-group">
+        <% store.forEach(function (session) { %>
+          <li class="list-group-item">
+            <strong>Session ID: </strong>
+            <%= session.sessionId %>
+            <br>
+            <strong>User ID: </strong>
+            <%= session.user %>
+            <br>
+            <form action="/revoke-session/<%= session.sessionId %>" method="POST">
+                <button type="submit" class="btn btn-danger">Revoke</button>
+            </form>
+          </li>
+        <% }) %>
+    </ul>
+
+</div>

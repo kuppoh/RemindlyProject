@@ -4,20 +4,20 @@ const userController = require('../controller/userController');
 
 
 const localLogin = new LocalStrategy(
-  {
-    usernameField: "email",
-    passwordField: "password",
-  },
-  async (email, password, done) => {
-    try {
-      const user = await userController.getUserByEmailIdAndPassword(email, password);
-      return user
-        ? done(null, user)
-        : done(null, false, { message: "Invalid email or password" });
-    } catch (error) {
-      done(null, false, { message: "Invalid email or password" });
+    {
+        usernameField: "email",
+        passwordField: "password",
+    },
+    async (email, password, done) => {
+        try {
+        const user = await userController.getUserByEmailIdAndPassword(email, password);
+        return user
+            ? done(null, user)
+            : done(null, false, { message: "Invalid email or password" });
+        } catch (error) {
+        done(null, false, { message: "Invalid email or password" });
+        }
     }
-  }
 );
 
 

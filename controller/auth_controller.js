@@ -5,6 +5,7 @@ let userController = require("./userController")
 let authController = {
     login: (req, res) => {
         res.render("auth/login");
+
     },
 
     register: (req, res) => {
@@ -12,8 +13,11 @@ let authController = {
     },
 
     loginSubmit: (req, res) => {
-        // implement later
-
+        if (req.user && req.user.role === "admin") {
+            res.redirect("/reminders")
+        } else {
+            res.redirect("/login")
+        }
     },
 
     registerSubmit: (req, res) => {

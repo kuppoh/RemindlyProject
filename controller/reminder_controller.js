@@ -3,25 +3,29 @@ let userModel = require("../models/userModel")
 
 
 let remindersController = {
-  list: (req, res) => {
-    res.render("reminder/index", { user : req.user, reminders: req.user.reminders });
-  },
+    list: (req, res) => { 
+        if (req.user) {
+            res.render("reminder/index", { user : req.user, reminders: req.user.reminders });
+        } else {
+            res.redirect("/login")
+        }
+    }, 
 
     new: (req, res) => {
         res.render("reminder/create");
     },
 
-  listOne: (req, res) => {
-    let reminderToFind = req.params.id;
-    let searchResult = req.user.reminders.find(function (reminder) {
-      return reminder.id == reminderToFind;
-    });
-    if (searchResult != undefined) {
-      res.render("reminder/single-reminder", { user : req.user, reminderItem: searchResult });
-    } else {
-      res.render("reminder/index", { reminders: req.user.reminders });
-    }
-  },
+    listOne: (req, res) => {
+        let reminderToFind = req.params.id;
+        let searchResult = req.user.reminders.find(function (reminder) {
+        return reminder.id == reminderToFind;
+        });
+        if (searchResult != undefined) {
+        res.render("reminder/single-reminder", { user : req.user, reminderItem: searchResult });
+        } else {
+        res.render("reminder/index", { reminders: req.user.reminders });
+        }
+    },
 
     create: (req, res) => {
         let reminder = {

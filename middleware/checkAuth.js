@@ -6,11 +6,17 @@ module.exports = {
         return next();
     }
     res.redirect("/login");
-  },
-  forwardAuthenticated: function (req, res, next) {
-    if (!req.isAuthenticated()) {
-        return next();
+    },
+    forwardAuthenticated: function (req, res, next) {
+        if (!req.isAuthenticated()) {
+            return next();
+        }
+        res.redirect("/reminders");
+    },
+    isAdmin: function (req, res, next) {
+        if (req.user.role === "admin") {
+            return next();
+        }
+        res.redirect("/login")
     }
-    res.redirect("/reminders");
-  },
 };

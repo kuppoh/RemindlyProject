@@ -6,8 +6,11 @@ const reminderController = require("./controller/reminder_controller");
 const authController = require("./controller/auth_controller");
 const router = express.Router();
 const session = require('express-session');
+
 const passport = require('./middleware/passport');
 const userController = require('./controller/userController');
+const adminController = require('./controller/adminController');
+
 
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -16,12 +19,19 @@ app.use(express.urlencoded({ extended: false }));
 app.use(ejsLayouts);
 
 // Added code for passport
-app.use(session({
-    secret: 'your secret key',
-    resave: false,
-    saveUninitialized: true,
-}));
-const { forwardAuthenticated } = require("./middleware/checkAuth");
+app.use(
+        session({
+        secret: "secret",
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+            httpOnly: true,
+            secure: false,
+            maxAge: 24 * 60 * 60 * 1000,
+        },
+        })
+);
+const { forwardAuthenticated, ensureAuthenticated, isAdmin } = require("./middleware/checkAuth");
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -39,7 +49,7 @@ app.post("/reminder/delete/:id", reminderController.delete);
 
 // 👌 Ignore for now
 app.get("/register", authController.register);
-app.get("/login", authController.login);
+app.get("/login", forwardAuthenticated, authController.login);
 app.post("/register", authController.registerSubmit);
 //app.post("/login", authController.loginSubmit);
 
@@ -47,16 +57,21 @@ passport.serializeUser(function (user, done) {
     done(null, user.id);
 });
 
-// Login and logout route
-app.get("/login", forwardAuthenticated, (req, res) => res.render("login"));
+// admin route
+
+//app.get("/admin", adminController.getSessions)
 
 app.post(
-  "/login",
-  passport.authenticate("local", {
-    successRedirect: "/reminders",
-    failureRedirect: "/login",
-  })
+    "/login",
+    passport.authenticate("local", {
+        failureRedirect: "/login",
+    }),
+    authController.loginSubmit
+    
 );
+
+app.get("/admin", ensureAuthenticated, isAdmin, adminController.getSessions);
+app.post("/revoke-session/:id", ensureAuthenticated, isAdmin, adminController.revoke);
 
 app.post('/logout', (req, res) => {
   req.session.destroy(function(err) {
@@ -72,6 +87,8 @@ app.get("/logout", (req, res) => {
   req.logout();
   res.redirect("/login");
 });
+
+
 
 app.listen(3001, function () {
     console.log(
