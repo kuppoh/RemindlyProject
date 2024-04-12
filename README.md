@@ -58,3 +58,8 @@ I worked on the following tasks:
 2. Registered for a developer account at unsplash - To receive API key
 3. Implemented hide Nav Bar code
 4. Implemented unsplash API and relevant code to show image on single-reminder.ejs - API code added to userModel.js
+
+April 12th 
+Chris Poon
+I worked on the following tasks:
+1. Added username each session in the admin dashboard
