@@ -1,6 +1,5 @@
 let database = require("../database");
-let userModel = require("../models/userModel")
-
+let { userModel, keywordToImage } = require("../models/userModel");
 
 let remindersController = {
   list: (req, res) => {
@@ -11,28 +10,31 @@ let remindersController = {
         res.render("reminder/create");
     },
 
-  listOne: (req, res) => {
-    let reminderToFind = req.params.id;
-    let searchResult = req.user.reminders.find(function (reminder) {
-      return reminder.id == reminderToFind;
-    });
-    if (searchResult != undefined) {
-      res.render("reminder/single-reminder", { user : req.user, reminderItem: searchResult });
-    } else {
-      res.render("reminder/index", { reminders: req.user.reminders });
-    }
-  },
+  listOne: async (req, res) => {
+      let reminderToFind = req.params.id;
+      let searchResult = req.user.reminders.find(function (reminder) {
+        return reminder.id == reminderToFind;
+      });
+      if (searchResult) {
+        const banner = await keywordToImage(searchResult.title);
+        res.render("reminder/single-reminder", { user : req.user, reminderItem: searchResult, banner: banner });
+      } else {
+        res.status(404).send('Reminder not found');
+      }
+    },
 
-    create: (req, res) => {
+    create: async (req, res) => {
+        let banner = await keywordToImage(req.body.keyword);
         let reminder = {
-        id: req.user.reminders.length + 1,
-        title: req.body.title,
-        description: req.body.description,
-        completed: false,
+            id: req.user.reminders.length + 1,
+            title: req.body.title,
+            description: req.body.description,
+            banner: banner,
+            completed: false,
         };
         req.user.reminders.push(reminder);
         res.redirect("/reminders");
-    },
+},
 
     edit: (req, res) => {
         let reminderToFind = req.params.id; 

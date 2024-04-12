@@ -4,15 +4,12 @@ const path = require("path");
 const ejsLayouts = require("express-ejs-layouts");
 const reminderController = require("./controller/reminder_controller");
 const authController = require("./controller/auth_controller");
-const router = express.Router();
 const session = require('express-session');
 const passport = require('./middleware/passport');
-const userController = require('./controller/userController');
+const { ensureAuthenticated, forwardAuthenticated } = require("./middleware/checkAuth");
 
 app.use(express.static(path.join(__dirname, "public")));
-
 app.use(express.urlencoded({ extended: false }));
-
 app.use(ejsLayouts);
 
 // Added code for passport
@@ -21,42 +18,56 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
 }));
-const { forwardAuthenticated } = require("./middleware/checkAuth");
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use((req, res, next) => {
+  if (typeof res.locals.includeNavbar === 'undefined') {
+    res.locals.includeNavbar = true;
+  }
+  next();
+});
+
 app.set("view engine", "ejs");
+app.set('layout includeNavbar', true);
 
 // Routes start here
-app.get("/reminders", reminderController.list);
-app.get("/reminder/new", reminderController.new);
+app.get('/reminders/', ensureAuthenticated, reminderController.list);
+app.get("/reminder/new", ensureAuthenticated, reminderController.new);
 app.get("/reminder/:id", reminderController.listOne);
 app.get("/reminder/:id/edit", reminderController.edit);
-app.post("/reminder/", reminderController.create);
-// ⭐ Implement these two routes below!
+app.post("/reminder/", ensureAuthenticated, reminderController.create);
 app.post("/reminder/update/:id", reminderController.update);
 app.post("/reminder/delete/:id", reminderController.delete);
 
-// 👌 Ignore for now
+// Login and register page routes
 app.get("/register", authController.register);
-app.get("/login", authController.login);
+app.get("/login", forwardAuthenticated, (req, res, next) => {
+  res.locals.includeNavbar = false;
+  next();
+}, (req, res) => {
+  res.render("login", { error: null });
+});
 app.post("/register", authController.registerSubmit);
-//app.post("/login", authController.loginSubmit);
 
 passport.serializeUser(function (user, done) {
     done(null, user.id);
 });
 
-// Login and logout route
-app.get("/login", forwardAuthenticated, (req, res) => res.render("login"));
-
-app.post(
-  "/login",
-  passport.authenticate("local", {
-    successRedirect: "/reminders",
-    failureRedirect: "/login",
-  })
-);
+// Login route with passport and show error message if login fails
+app.post("/login", (req, res, next) => {
+  passport.authenticate("local", (err, user, info) => {
+    if (err) { return next(err); }
+    if (!user) { 
+      res.locals.includeNavbar = false;
+      return res.render("login", { error: "Invalid email or password." }); 
+    }
+    req.logIn(user, function(err) {
+      if (err) { return next(err); }
+      return res.redirect("/reminders");
+    });
+  })(req, res, next);
+});
 
 app.post('/logout', (req, res) => {
   req.session.destroy(function(err) {
@@ -75,6 +86,6 @@ app.get("/logout", (req, res) => {
 
 app.listen(3001, function () {
     console.log(
-        "Server running. Visit: http://localhost:3001/reminders in your browser 🚀"
+        "Server running. Visit: http://localhost:3001/ in your browser 🚀"
     );
 });

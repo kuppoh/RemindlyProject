@@ -96,4 +96,14 @@ const userModel = {
     },
 };
 
-module.exports = { database, userModel };
+const fetch = require('node-fetch');
+
+async function keywordToImage(keyword) {
+    const response = await fetch(`https://api.unsplash.com/search/photos?page=1&query=${keyword}&client_id=VxjNhjLgaDvwvZHzwUhWPweM8WeI4wl9qnuRFi-Ntkc`);
+    const data = await response.json();
+    if (data.results && data.results.length > 0) {
+        return data.results[0].urls.small;
+    } 
+}
+
+module.exports = { database, userModel, keywordToImage };

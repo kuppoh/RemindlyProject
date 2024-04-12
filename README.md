@@ -29,6 +29,7 @@ I worked on the following tasks:
 1. Added "Welcome User" Functionality - The name of the current user that is logged in will be displayed on the top of reminders page(s)
 2. Debugged and tested - Test specific user login with create/edit and delete functionality in web
 3. Added log out button - Added log out button in reminder page(s)
+4. Hide NavBar if not logged in - Wrote if statement in login.ejs so that the NavBar will not show in the login page or if there is no user no logged in
 
 April 9th (2nd sprint)
 Keziah Wacnang:
@@ -38,3 +39,11 @@ I worked on the following tasks:
    1. added the same users from the passport lab
 3. editted reminder_controller.js: used req.user instead of cindy
 4. fixed the ejs for index.ejs
+
+April 11th (Final Sprint)
+Chris Poon
+I worked on the following tasks:
+1. Researched how to hide Nav Bar and read the documentation for unsplash - To learn how to implement unsplash API
+2. Registered for a developer account at unsplash - To receive API key
+3. Implemented hide Nav Bar code
+4. Implemented unsplash API and relevant code to show image on single-reminder.ejs - API code added to userModel.js
