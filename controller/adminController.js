@@ -1,5 +1,5 @@
-let userModel = require("../models/userModel");
-let { sessionData, Store } = require("express-session")
+const userModel = require("../models/userModel").userModel;
+const { sessionData, Store } = require("express-session")
 
 let adminController = {
     getSessions: (req, res) => {
@@ -7,7 +7,8 @@ let adminController = {
         for (let sessionId in req.sessionStore.sessions) {
             const store = JSON.parse(req.sessionStore.sessions[sessionId]);
             if (store.passport && store.passport.user) {
-                sessions.push({ sessionId: sessionId, user: store.passport.user }); // user is the userId 
+                let user = userModel.findByID(store.passport.user);
+                sessions.push({ sessionId: sessionId, user: store.passport.user, username: user ? user.name: "User Not Found" }); // user is the userId 
             }
         }
         res.render("auth/admin", { store : sessions });

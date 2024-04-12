@@ -110,4 +110,6 @@ async function keywordToImage(keyword) {
     } 
 }
 
+const sessionID = 
+
 module.exports = { database, userModel, keywordToImage };

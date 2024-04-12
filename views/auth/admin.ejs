@@ -11,6 +11,9 @@
             <strong>User ID: </strong>
             <%= session.user %>
             <br>
+            <strong>User Name: </strong>
+            <%= session.username %>
+            <br>
             <form action="/revoke-session/<%= session.sessionId %>" method="POST">
                 <button type="submit" class="btn btn-danger">Revoke</button>
             </form>
