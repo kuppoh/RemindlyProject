@@ -40,6 +40,17 @@ I worked on the following tasks:
 3. editted reminder_controller.js: used req.user instead of cindy
 4. fixed the ejs for index.ejs
 
+April 11th (2nd sprint)
+Keziah Wacnang:
+I worked on the following tasks:
+1. watched some videos and read documentation for express-session and how they work
+2. Added functionality where if you are not the current user it redirects you to the login page instead of the reminders page
+   1. helpful if the session expired
+3. added roles, for admin and user so when admin logs in they can see a button to take them to the admin page
+   1. Also editted the reminder/index.ejs to add the button and make it redirect
+4. added getSessions to get all current active sessions on the server
+5. added revoke functionality to destroy sessions
+
 April 11th (Final Sprint)
 Chris Poon
 I worked on the following tasks:

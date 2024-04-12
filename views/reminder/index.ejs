@@ -2,11 +2,21 @@
   <% if (user) { %>
     <div style="display: flex; justify-content: space-between; align-items: center;">
       <p>Welcome, <%= user.name %>!</p>
-      <form action="/logout" method="POST" style="margin: 0;">
-        <button type="submit" class="btn btn-primary">Logout</button>
-      </form>
+      <div style="display: flex;">
+        <% if (user.role === "admin") { %>
+            <form action="/admin" method="GET" style="margin: 10px; ">
+                <button type="submit" class="btn btn-primary">Admin</button>
+            </form>
+          <% } %>
+          <form action="/logout" method="POST" style="margin: 10px;">
+            <button type="submit" class="btn btn-danger">Logout</button>
+        </form>
+      </div>
+
+      
     </div>
   <% } %>
+
 
   <h1 class="page-header">Reminders</h1>
 

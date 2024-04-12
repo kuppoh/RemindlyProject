@@ -18,6 +18,7 @@ let database = [
         name: "Jimmy Smith",
         email: "jimmy123@gmail.com",
         password: "jimmy123!",
+        role: "admin",
         reminders: [
             {
                 id: 1,
@@ -38,6 +39,7 @@ let database = [
         name: "Johnny Doe",
         email: "johnny123@gmail.com",
         password: "johnny123!",
+        role: "user",
         reminders: [
             {
                 id: 1, 
@@ -58,6 +60,7 @@ let database = [
         name: "Jonathan Chen",
         email: "jonathan123@gmail.com",
         password: "jonathan123!",
+        role: "user",
         reminders: [
             {
                 id: 1,
@@ -84,6 +87,7 @@ let database = [
         name: "Cindy Fake",
         email: "cindyfakemail@gmail.com",
         password: "cindy123!",
+        role: "user",
         reminders: [
             {
                 id: 1,

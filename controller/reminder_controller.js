@@ -2,9 +2,13 @@ let database = require("../database");
 let { userModel, keywordToImage } = require("../models/userModel");
 
 let remindersController = {
-  list: (req, res) => {
-    res.render("reminder/index", { user : req.user, reminders: req.user.reminders });
-  },
+    list: (req, res) => { 
+        if (req.user) {
+            res.render("reminder/index", { user : req.user, reminders: req.user.reminders });
+        } else {
+            res.redirect("/login")
+        }
+    }, 
 
     new: (req, res) => {
         res.render("reminder/create");
