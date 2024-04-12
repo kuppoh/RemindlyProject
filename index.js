@@ -53,10 +53,8 @@ app.post("/reminder/delete/:id", reminderController.delete);
 
 // Login and register page routes
 app.get("/register", authController.register);
-app.get("/login", forwardAuthenticated, authController.login, (req, res, next) => {
+app.get("/login", forwardAuthenticated, (req, res, next) => {
   res.locals.includeNavbar = false;
-  next();
-}, (req, res) => {
   res.render("login", { error: null });
 });
 app.post("/register", authController.registerSubmit);
@@ -78,7 +76,6 @@ app.post("/login", (req, res, next) => {
       return res.redirect("/reminders");
     });
   })(req, res, next);
-  authController.loginSubmit
 });
 
 app.get("/admin", ensureAuthenticated, isAdmin, adminController.getSessions);
